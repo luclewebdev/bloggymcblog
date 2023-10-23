@@ -1,0 +1,11 @@
+
+
+{% form_theme commentForm 'bootstrap_5_layout.html.twig' %}
+
+{{ form_start(commentForm, {'action': path('app_comment', {id:article.id})}) }}
+
+{{ form_widget(commentForm.content, {'attr':{'placeholder':'your comment'}}) }}
+
+<button type="submit" class="btn btn-primary">Comment</button>
+
+{{ form_end(commentForm) }}

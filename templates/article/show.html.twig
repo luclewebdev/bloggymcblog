@@ -7,11 +7,28 @@
 
 
     <div class="row border border-dark m-3">
+        <p><small>author : {{ article.author.username }}</small></p>
         <h3>{{ article.name }}</h3>
         <p>{{ article.content }}</p>
         <a href="{{ path('app_article') }}" class="btn btn-secondary">Retour</a>
         <a href="{{ path('edit_article', {id:article.id}) }}" class="btn btn-warning">Edit</a>
         <a href="{{ path('delete_article', {id:article.id}) }}" class="btn btn-danger">Delete</a>
+    </div>
+
+    <div class="border border-dark">
+        {% for comment in article.comments %}
+
+            <div class="row border-border-dark">
+                <p><small>author: {{ comment.author.username }}</small></p>
+                <p><strong>{{ comment.content }}</strong></p>
+            </div>
+
+
+        {% endfor %}
+
+        {%include 'comment/comment.html.twig' %}
+
+
     </div>
 
 

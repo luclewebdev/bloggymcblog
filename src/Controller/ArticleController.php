@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Comment;
 use App\Form\ArticleType;
+use App\Form\CommentType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,11 +32,15 @@ class ArticleController extends AbstractController
     public function show(Article $article)
     {
 
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+
 
         if(!$article){return $this->redirectToRoute('app_article');}
 
         return $this->render('article/show.html.twig', [
-                'article'=>$article
+                'article'=>$article,
+            'commentForm'=>$commentForm
         ]);
     }
 
@@ -42,18 +48,35 @@ class ArticleController extends AbstractController
     #[Route('edit/{id}', name:"edit_article")]
     public function create(Article $article =null ,Request $request, EntityManagerInterface $manager)
         {
+            $user = $this->getUser();
+            if(!$user){return $this->redirectToRoute('app_article');}
+
             $edit =true;
             if(!$article){
                 $article = new Article();
                 $edit=false;
             }
 
+            if($edit){
+                if($user !== $article->getAuthor()){
+
+                    $this->addFlash('info', "c'est pas le tien, degage");
+
+                    return $this->redirectToRoute('show_article', [
+                        'id'=>$article->getId()
+                    ]);
+                }
+            }
+
+
             $form = $this->createForm(ArticleType::class, $article);
 
             $form->handleRequest($request);
             if($form->isSubmitted() && $form->isValid())
             {
-
+                if(!$edit){
+                    $article->setAuthor($user);
+                }
 
                 $manager->persist($article);
                 $manager->flush();
@@ -72,12 +95,25 @@ class ArticleController extends AbstractController
         #[Route('delete/{id}', name:'delete_article')]
         public function delete(Article $article, EntityManagerInterface $manager)
         {
+            $user = $this->getUser();
+
+            if(!$user||!$article){return $this->redirectToRoute('app_article');}
+
+
+            if($user !== $article->getAuthor()){
+
+                $this->addFlash('info', "c'est pas le tien, degage");
+
+                return $this->redirectToRoute('show_article', [
+                    'id'=>$article->getId()
+                ]);
+            }
 
             if($article){
                 $manager->remove($article);
                 $manager->flush();
             }
-
+            $this->addFlash('info', 'bien supprimé, bravo');
             return $this->redirectToRoute('app_article');
         }
 }
