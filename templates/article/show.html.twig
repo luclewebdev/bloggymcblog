@@ -4,6 +4,11 @@
 
 {% block body %}
 
+    <div class="border">
+        <img src="{{ asset( vich_uploader_asset(article.images[0], 'imageFile') ) | imagine_filter('thumb') }}" />
+
+    </div>
+
 
 
     <div class="row border border-dark m-3">
@@ -13,6 +18,7 @@
         <a href="{{ path('app_article') }}" class="btn btn-secondary">Retour</a>
         <a href="{{ path('edit_article', {id:article.id}) }}" class="btn btn-warning">Edit</a>
         <a href="{{ path('delete_article', {id:article.id}) }}" class="btn btn-danger">Delete</a>
+        <a href="{{ path('app_image_article', {id:article.id}) }}" class="btn btn-success">Add images</a>
     </div>
 
     <div class="border border-dark">
