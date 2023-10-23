@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ArticleController!{% endblock %}
+
+{% block body %}
+
+
+
+    <div class="row border border-dark m-3">
+        <h3>{{ article.name }}</h3>
+        <p>{{ article.content }}</p>
+        <a href="{{ path('app_article') }}" class="btn btn-secondary">Retour</a>
+        <a href="{{ path('edit_article', {id:article.id}) }}" class="btn btn-warning">Edit</a>
+        <a href="{{ path('delete_article', {id:article.id}) }}" class="btn btn-danger">Delete</a>
+    </div>
+
+
+
+
+{% endblock %}

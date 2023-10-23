@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ArticleController!{% endblock %}
+
+{% block body %}
+
+
+    {% for article in articles %}
+
+    <div class="row border border-dark m-3">
+        <h3>{{ article.name }}</h3>
+        <p>{{ article.content }}</p>
+        <a href="{{ path('show_article', {id:article.id}) }}" class="btn btn-success">voir</a>
+>
+    </div>
+
+    {% endfor %}
+
+
+
+{% endblock %}

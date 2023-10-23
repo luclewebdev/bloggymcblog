@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ArticleController!{% endblock %}
+
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+
+
+
+
+    <h2>
+        {% if edit %}
+        Edition de {{ article.name }}
+        {% else %}
+        New Article
+        {% endif %}
+    </h2>
+
+    {{ form_start(form) }}
+
+
+    {{ form_widget(form.name, {'attr':{'placeholder':"titre de l'article"}}) }}
+
+    {{ form_errors(form.name) }}
+
+    {{ form_row(form.content) }}
+
+    <button type="submit" class="btn btn-success">post</button>
+
+
+    {{ form_end(form) }}
+
+
+{% endblock %}
