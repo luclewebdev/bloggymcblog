@@ -7,6 +7,7 @@ use App\Entity\Comment;
 use App\Entity\Image;
 use App\Form\ArticleType;
 use App\Form\CommentType;
+use App\Form\DropImageType;
 use App\Form\ImageType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,8 +36,7 @@ class ArticleController extends AbstractController
     #[Route('{name}', name:'show_article_name', priority: -1 )]
     public function show(Article $article)
     {
-        $image = new Image();
-        $imageForm = $this->createForm(ImageType::class, $image);
+        $imageForm = $this->createForm(DropImageType::class);
 
         $comment = new Comment();
         $commentForm = $this->createForm(CommentType::class, $comment);

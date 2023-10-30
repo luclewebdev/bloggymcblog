@@ -19,7 +19,7 @@
 
 
     {{ form_start(imageForm, {'action': path('add_image_to_article', {id:article.id})  }) }}
-    {{ form_widget(imageForm.imageFile) }}
+{{ form_widget(imageForm.imageDropFile) }}
     <button type="submit" class="btn btn-success">Submit</button>
     {{ form_end(imageForm) }}
 
