@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Entity\Image;
 use App\Form\ArticleType;
 use App\Form\CommentType;
+use App\Form\ImageType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,10 +29,14 @@ class ArticleController extends AbstractController
         ]);
     }
 
+
+
     #[Route('{id}', name:'show_article', priority: -1 )]
     #[Route('{name}', name:'show_article_name', priority: -1 )]
     public function show(Article $article)
     {
+        $image = new Image();
+        $imageForm = $this->createForm(ImageType::class, $image);
 
         $comment = new Comment();
         $commentForm = $this->createForm(CommentType::class, $comment);
@@ -40,7 +46,8 @@ class ArticleController extends AbstractController
 
         return $this->render('article/show.html.twig', [
                 'article'=>$article,
-            'commentForm'=>$commentForm
+            'commentForm'=>$commentForm,
+            'imageForm'=>$imageForm,
         ]);
     }
 

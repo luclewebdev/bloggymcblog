@@ -19,7 +19,7 @@ class Article
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\Length(
-        min:3,minMessage: "trois caracteres minimum coco !"
+        min: 3, minMessage: "trois caracteres minimum coco !"
     )]
     private ?string $name = null;
 
@@ -35,6 +35,7 @@ class Article
 
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Image::class)]
     private Collection $images;
+
 
     public function __construct()
     {
@@ -143,3 +144,4 @@ class Article
         return $this;
     }
 }
+

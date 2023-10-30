@@ -3,12 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\ImageRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\ORM\Mapping as ORM;use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-#[ORM\Entity(repositoryClass: ImageRepository::class)]
 #[Vich\Uploadable]
+#[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
 {
     #[ORM\Id]
@@ -20,7 +19,6 @@ class Image
     {
         return $this->id;
     }
-
     // NOTE: This is not a mapped field of entity metadata, just a simple property.
     #[Vich\UploadableField(mapping: 'images', fileNameProperty: 'imageName', size: 'imageSize')]
     private ?File $imageFile = null;
