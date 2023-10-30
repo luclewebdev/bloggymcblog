@@ -10,46 +10,42 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\UX\Dropzone\Form\DropzoneType;
 
+#[Route('/image/')]
 class ImageController extends AbstractController
 {
-    #[Route('/image/article/{id}', name: 'app_image_article')]
-    public function addToArticle(Article $article, Request $request, EntityManagerInterface $manager): Response
+    #[Route('addtoarticle/{id}', name: 'add_image_to_article')]
+    public function addToArticle(Article $article, EntityManagerInterface $manager, Request $request): Response
     {
-        if(!$article || !$this->getUser()){return $this->redirectToRoute('app_article');}
-
-
+        if(!$article){return $this->redirectToRoute('app_article');}
 
         $image = new Image();
-        $imageForm = $this->createForm(ImageType::class, $image);
-        $imageForm->handleRequest($request);
-        if($imageForm->isSubmitted() && $imageForm->isValid())
-        {
-            $image->setArticle($article);
-            $manager->persist($image);
-            $manager->flush();
-
-        }
+        $imageObject = $request->files->get('drop_image');
+        $imageFile = $imageObject['imageDropFile'];
+        $image->setImageFile($imageFile);
 
 
-        return $this->render('article/addImage.html.twig', [
-            'article' => $article,
-            'imageForm'=>$imageForm,
-        ]);
+        $image->setArticle($article);
+        $manager->persist($image);
+        $manager->flush();
+
+
+
+
+        return $this->redirectToRoute('show_article', ['id'=>$article->getId()]);
     }
 
-    #[Route('/image/article/delete/{id}', name:'suppr_image')]
-public function supprFromArticle(Image $image, EntityManagerInterface $manager)
+#[Route('supprfromarticle/{id}', name:'image_article_suppr')]
+    public function supprFromArticle(Image $image, EntityManagerInterface $manager):Response
     {
-            $article = $image->getArticle();
-            $manager->remove($image);
-            $manager->flush();
+        if(!$image){return $this->redirectToRoute('app_article');}
 
-            return $this->redirectToRoute('app_image_article', [
-                'id'=>$article->getId()
-            ]);
+        $article = $image->getArticle();
 
+
+        $manager->remove($image);
+        $manager->flush();
+        return $this->redirectToRoute('show_article', ['id'=>$article->getId()]);
 
     }
 }
