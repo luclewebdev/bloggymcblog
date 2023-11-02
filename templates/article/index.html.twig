@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello ArticleController!{% endblock %}
-
+        {% block javascripts %}
+            {{ encore_entry_script_tags('like') }}
+        {% endblock %}
 {% block body %}
 
 
@@ -11,6 +13,13 @@
         <h3>{{ article.name }}</h3>
         <p>{{ article.content }}</p>
         <a href="{{ path('show_article', {id:article.id}) }}" class="btn btn-success">voir</a>
+
+
+        <a href="{{ path('app_like_article', {id:article.id}) }}" class="class btn like">
+            <i class="bi thumb bi-hand-thumbs-up{% if app.user and article.isLikedBy(app.user) %}-fill{% endif %}"></i>
+            <span class="nbrLikes">{{ article.likes|length }}</span>
+
+        </a>
 
         <a href="{{ path('cart_add', {id:article.id, quantity:1}) }}" class="btn btn-primary">Add to cart</a>
     </div>

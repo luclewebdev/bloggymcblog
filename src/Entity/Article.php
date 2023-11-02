@@ -39,11 +39,15 @@ class Article
     #[ORM\Column(nullable: true)]
     private ?int $price = null;
 
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Like::class)]
+    private Collection $likes;
+
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -157,6 +161,47 @@ class Article
         $this->price = $price;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Like>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): static
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): static
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getArticle() === $this) {
+                $like->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+    public function isLikedBy(User $user):bool
+    {
+       foreach($this->likes as $like)
+       {
+           if($like->getAuthor() === $user)
+           {
+               return true;
+           }
+       }
+       return false;
     }
 }
 
