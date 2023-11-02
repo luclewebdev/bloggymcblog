@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,6 +31,11 @@ class RegistrationController extends AbstractController
             );
 
             $entityManager->persist($user);
+
+            $entityManager->flush();
+            $profile = new Profile();
+            $profile->setOfUser($user);
+            $entityManager->persist($profile);
             $entityManager->flush();
             // do anything else you need here, like send an email
 

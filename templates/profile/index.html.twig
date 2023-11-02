@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfileController!{% endblock %}
+
+{% block body %}
+
+{% if app.user %}
+        <p>coucou</p>
+    <p><strong>{{ app.user.profile.name }}</strong></p>
+    <p><strong>{{ app.user.profile.lastName }}</strong></p>
+
+    <a href="{{ path('update_profile') }}" class="btn btn-primary">update profile</a>
+
+ {% for address in app.user.profile.addresses %}
+
+     <div class="d-flex">
+         <p><strong>Address in city : {{ address.city }}</strong></p>
+         <a href="{{ path('delete_address', {id:address.id}) }}" class="btn btn-danger">X</a>
+
+     </div>
+
+    {% endfor %}
+    <a href="{{ path('add_address') }}" class="btn btn-primary">add address</a>
+
+
+
+
+    {% endif %}
+{% for order in app.user.profile.orders %}
+
+    <p><strong>order : {{ order.id }}</strong></p>
+
+    {% endfor %}
+
+{% endblock %}
