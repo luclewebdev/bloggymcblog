@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MessageController!{% endblock %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{% block body %}
+
+    {{ form_start(form) }}
+    {{ form_widget(form.content) }}
+    <button type="submit" class="btn btn-success">OK</button>
+    {{ form_end(form) }}
+{% endblock %}

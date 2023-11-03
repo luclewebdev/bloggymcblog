@@ -8,6 +8,7 @@ use App\Entity\OrderItem;
 use App\Repository\AddressRepository;
 use App\Service\CartService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,7 +57,7 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/order/payment/billing/{id}/shipping/{idShipping}', name:'app_makeorder')]
+    #[Route('/order/makeorder/billing/{id}/shipping/{idShipping}', name:'app_makeorder')]
     public function makeOrder(Address $billingAddress, AddressRepository $addressRepository, $idShipping, CartService $cartService, EntityManagerInterface $manager)
     {
         $shippingAddress = $addressRepository->find($idShipping);
@@ -83,6 +84,15 @@ class OrderController extends AbstractController
 
 
         return $this->redirectToRoute('app_profile');
+    }
+    #[Route('/test/{id_s}/{id_b}', name:'testroute')]
+    public function test(
+        #[MapEntity(class: Address::class, mapping: ['id'=>'id_s'])] $as,
+        #[MapEntity(class: Address::class, mapping: ['id'=>'id_b'])] $ab,
+    ):Response
+    {
+        dd($as);
+        return $this->json("oui", 200);
     }
 
 }
